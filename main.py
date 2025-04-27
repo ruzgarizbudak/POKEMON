@@ -3,11 +3,11 @@ from discord.ext import commands
 from config import token
 from logic import Pokemon
 
-# Bot için niyetleri (intents) ayarlama
+# Bot için yetkileri/intents ayarlama
 intents = discord.Intents.default()  # Varsayılan ayarların alınması
 intents.messages = True              # Botun mesajları işlemesine izin verme
 intents.message_content = True       # Botun mesaj içeriğini okumasına izin verme
-intents.guilds = True                # Botun sunucularla (loncalar) çalışmasına izin verme
+intents.guilds = True                # Botun sunucularla çalışmasına izin verme
 
 # Tanımlanmış bir komut önekine ve etkinleştirilmiş amaçlara sahip bir bot oluşturma
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -33,6 +33,6 @@ async def go(ctx):
         else:
             await ctx.send("Pokémonun görüntüsü yüklenemedi!")
     else:
-        await ctx.send("Zaten kendi Pokémonunuzu oluşturdunuz!")  # Bir Pokémon'un daha önce yaratılıp yaratılmadığını gösteren bir mesaj
+        await ctx.send("Zaten kendi Pokémonunuzu oluşturdunuz!")  # Bir Pokémon'un daha önce oluşturulup oluşturulmadığını gösteren bir mesaj
 # Botun çalıştırılması
 bot.run(token)
