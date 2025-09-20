@@ -32,3 +32,52 @@ class Pokemon:
 
     async def show_img(self):
         # PokeAPI aracılığıyla bir pokémon görüntüsünün URL'sini almak için asenktron metot
+        # PokeAPI aracılığıyla bir pokémonun adını almak için asenktron metot
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'  # İstek için URL API
+        async with aiohttp.ClientSession() as session:  #  HTTP oturumu açma
+            async with session.get(url) as response:  # GET isteği gönderme
+                if response.status == 200:
+                    data = await response.json()  # JSON yanıtının alınması ve çözümlenmesi
+                    return data['sprites']['front_defualt']  #  Pokémon adını döndürme
+                else:
+                    return "Pikachu"  # İstek başarısız olursa varsayılan adı döndürür
+                
+
+    async def get_hp(self):
+        # PokeAPI aracılığıyla bir pokémonun adını almak için asenktron metot
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'  # İstek için URL API
+        async with aiohttp.ClientSession() as session:  #  HTTP oturumu açma
+            async with session.get(url) as response:  # GET isteği gönderme
+                if response.status == 200:
+                    data = await response.json()  # JSON yanıtının alınması ve çözümlenmesi
+                    return data['stats'][0]['base_stat']  #  Pokémon adını döndürme
+                else:
+                    return 50  # İstek başarısız olursa varsayılan adı döndürür
+    
+
+
+
+    async def get_attack(self):
+        # PokeAPI aracılığıyla bir pokémonun adını almak için asenktron metot
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'  # İstek için URL API
+        async with aiohttp.ClientSession() as session:  #  HTTP oturumu açma
+            async with session.get(url) as response:  # GET isteği gönderme
+                if response.status == 200:
+                    data = await response.json()  # JSON yanıtının alınması ve çözümlenmesi
+                    return data['stats'][1]['base_stat']  #  Pokémon adını döndürme
+                else:
+                    return 50  # İstek başarısız olursa varsayılan adı döndürür
+                
+
+
+
+    async def get_defense(self):
+        # PokeAPI aracılığıyla bir pokémonun adını almak için asenktron metot
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'  # İstek için URL API
+        async with aiohttp.ClientSession() as session:  #  HTTP oturumu açma
+            async with session.get(url) as response:  # GET isteği gönderme
+                if response.status == 200:
+                    data = await response.json()  # JSON yanıtının alınması ve çözümlenmesi
+                    return data['stats'][2]['base_stat']  #  Pokémon adını döndürme
+                else:
+                    return 50  # İstek başarısız olursa varsayılan adı döndürür
