@@ -1,5 +1,6 @@
 import aiohttp  # Eşzamansız HTTP istekleri için bir kütüphane
 import random
+import asyncio
 
 class Pokemon:
     pokemons = {}
@@ -27,7 +28,11 @@ class Pokemon:
     async def info(self):
         # Pokémon hakkında bilgi döndüren bir metot
         if not self.name:
-            self.name = await self.get_name()  # Henüz yüklenmemişse bir adın geri alınması
+            self.name = await self.get_name()# Henüz yüklenmemişse bir adın geri alınması
+            self.attack=await self.get_attack()
+            self.hp=await self.get_hp()
+            self.defense=await self.get_defense()
+            
         return f"Pokémonunuzun ismi: {self.name}"  # Pokémon adını içeren dizeyi döndürür
 
     async def show_img(self):
@@ -81,3 +86,32 @@ class Pokemon:
                     return data['stats'][2]['base_stat']  #  Pokémon adını döndürme
                 else:
                     return 50  # İstek başarısız olursa varsayılan adı döndürür
+                
+
+
+    async def saldir(self,enemy):
+        hasar=round(self.attack*(enemy.defense/(enemy.defense+100)),2)
+        if enemy.hp <= hasar:
+            enemy.hp=0
+            return f'{self.name} {enemy.name}\'e saldırdı.\n {enemy.name} yenildi.'
+
+        else:
+            enemy.hp-=hasar
+            return f'{self.name} {enemy.name}\'e saldırdı.{hasar} verdi.\n{enemy.name}\'in canı {enemy.hp} kaldı '
+
+
+if __name__== '__main__':
+    pokemon1=Pokemon('Rüzgar')
+    pokemon2=Pokemon('Ege')
+    async def deneme():
+        print(await pokemon1.info())
+        print(await pokemon2.info())
+        print("----------------------------------------------------------------------------------------------------------")
+        print(await pokemon1.saldir(pokemon2))
+        print('------------------------------------------------------------------------------------------------------------')
+        print(await pokemon2.saldir(pokemon1))
+
+
+
+
+    asyncio.run(deneme())
