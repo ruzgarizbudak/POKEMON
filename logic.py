@@ -43,7 +43,7 @@ class Pokemon:
             async with session.get(url) as response:  # GET isteği gönderme
                 if response.status == 200:
                     data = await response.json()  # JSON yanıtının alınması ve çözümlenmesi
-                    return data['sprites']['front_defualt']  #  Pokémon adını döndürme
+                    return data['sprites']['front_default']  #  Pokémon adını döndürme
                 else:
                     return "Pikachu"  # İstek başarısız olursa varsayılan adı döndürür
                 
@@ -90,19 +90,46 @@ class Pokemon:
 
 
     async def saldir(self,enemy):
-        hasar=round(self.attack*(enemy.defense/(enemy.defense+100)),2)
-        if enemy.hp <= hasar:
-            enemy.hp=0
-            return f'{self.name} {enemy.name}\'e saldırdı.\n {enemy.name} yenildi.'
+        if self.hp <= 0:
+            return f'{self.name} dinleniyor'
 
         else:
-            enemy.hp-=hasar
-            return f'{self.name} {enemy.name}\'e saldırdı.{hasar} verdi.\n{enemy.name}\'in canı {enemy.hp} kaldı '
+            if isinstance(enemy , Wizard):  # Düşmanın Wizard veri tipi olup olmadığının kontrol edilmesi (Sihirbaz sınıfının bir örneği midir?) 
+                sans = random.randint(1, 4) 
+                if sans == 1:
+                    return f"{enemy.name}, savaşta bir kalkan kullandı!"
+
+            hasar=round(self.attack*(enemy.defense/(enemy.defense+100)),2)
+            if enemy.hp <= hasar:
+                enemy.hp=0
+                return f'{self.name} {enemy.name}\'e saldırdı.\n {enemy.name} yenildi.'
+
+            else:
+                enemy.hp-=hasar
+                return f'{self.name} {enemy.name}\'e saldırdı.{hasar} verdi.\n{enemy.name}\'in canı {enemy.hp} kaldı '
+        
+
+
+class Fighter(Pokemon):
+    async def saldir(self, enemy):
+        super_guc = random.randint(10 , 20)  
+        self.attack += super_guc
+        sonuc = await super().saldir(enemy)  
+        self.attack -= super_guc
+        return sonuc + f"\n{self.name} süper saldırı kullandı. Eklenen güç: {super_guc}"
+    
+
+
+
+class Wizard(Pokemon):
+    pass
+
+
 
 
 if __name__== '__main__':
-    pokemon1=Pokemon('Rüzgar')
-    pokemon2=Pokemon('Ege')
+    pokemon1=Wizard('Rüzgar')
+    pokemon2=Fighter('Ege')
     async def deneme():
         print(await pokemon1.info())
         print(await pokemon2.info())
